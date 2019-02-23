@@ -1,13 +1,14 @@
-var firstButton = document.getElementById("first-button");
-var secondButton = document.getElementById("second-button");
-var thirdButton = document.getElementById("third-button");
+const apiBtns = document.querySelectorAll(".api-btn");
 
-checkbox.addEventListener("change", function() {
-  if (firstButton.checked) {
-    // do this
-    console.log("Checked");
-  } else {
-    // do that
-    console.log("Not checked");
-  }
-});
+apiBtns.forEach(btn =>
+  btn.addEventListener("change", e => {
+    console.log(e.target.dataset.name); // API name
+    if (e.target.checked) {
+      // TURN ON API
+      console.log("Checked");
+    } else {
+      // TURN OFF API
+      console.log("Not checked");
+    }
+  })
+);
