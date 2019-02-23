@@ -1030,3 +1030,8 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/* H1 Font */
+h1 {
+  font-family: "Rock Salt", cursive;
+}
