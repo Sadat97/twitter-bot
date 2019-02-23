@@ -742,7 +742,7 @@ button:disabled,
   right: 0;
   text-align: right;
   top: 0;
-  vertical-align: middle;
+
   width: 5em;
 }
 
@@ -811,7 +811,7 @@ button:disabled,
   font-weight: 400;
   color: #fff;
   margin: 0;
-  font-size: 1.5em;
+  font-size: 1.4em;
 }
 
 #banner .icon {
