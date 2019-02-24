@@ -87,7 +87,7 @@ function tweetIt(status) {
                 status: status
             }
     };
-    var url = "http://localhost:3000/tweets";
+    var url = "https://thawing-oasis-15291.herokuapp.com/tweets";
     fetch(url, {
         method: "POST",
         body: JSON.stringify(param),
