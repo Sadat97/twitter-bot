@@ -13,10 +13,10 @@ apiBtns.forEach(btn =>
     console.log(e.target.dataset.name); // API name
     if (e.target.checked) {
       // TURN ON API
-      if (e.target.dataset.name === "facebook") {
+      if (e.target.dataset.name === "news") {
         news = true;
       }
-      if (e.target.dataset.name === "potato") {
+      if (e.target.dataset.name === "joke") {
         jokes = true;
       }
       if (e.target.dataset.name === "foodRecipes") {
@@ -25,10 +25,10 @@ apiBtns.forEach(btn =>
       console.log("Checked");
     } else {
       // TURN OFF API
-      if (e.target.dataset.name === "facebook") {
+      if (e.target.dataset.name === "news") {
         news = false;
       }
-      if (e.target.dataset.name === "potato") {
+      if (e.target.dataset.name === "joke") {
         jokes = false;
       }
       if (e.target.dataset.name === "foodRecipes") {
@@ -94,9 +94,6 @@ function UserAction() {
     );
     xhttp.send();
   }
-
-  if(foodRecipes)
-    alert(rt, ri, rl);
 
   var status;
 
