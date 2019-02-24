@@ -2,6 +2,7 @@ const apiBtns = document.querySelectorAll(".api-btn");
 
 var news = false;
 var jokes = false;
+var foodRecipes = false;
 var twitter = false;
 
 apiBtns.forEach(btn =>
@@ -10,25 +11,31 @@ apiBtns.forEach(btn =>
     if (e.target.checked) {
       // TURN ON API
       if (e.target.dataset.name === "twitter") {
-        news = true;
+        twitter = true;
       }
       if (e.target.dataset.name === "facebook") {
-        jokes = true;
+        news = true;
       }
       if (e.target.dataset.name === "potato") {
-        twitter = true;
+        jokes = true;
+      }
+      if (e.target.dataset.name === "foodRecipes") {
+        foodRecipes = true;
       }
       console.log("Checked");
     } else {
       // TURN OFF API
       if (e.target.dataset.name === "twitter") {
-        news = false;
+        twitter = false;
       }
       if (e.target.dataset.name === "facebook") {
-        jokes = false;
+        news = false;
       }
       if (e.target.dataset.name === "potato") {
-        twitter = false;
+        jokes = false;
+      }
+      if (e.target.dataset.name === "foodRecipes") {
+        foodRecipes = false;
       }
       console.log("Not checked");
     }
@@ -61,8 +68,8 @@ function UserAction() {
     req.open("GET", "https://geek-jokes.sameerkumar.website/api", true);
     req.send();
   }
-  if (twitter) {
-    // TWEET
+  if (foodRecipes) {
+    // foodRecipes
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -86,5 +93,8 @@ function UserAction() {
       true
     );
     xhttp.send();
+  }
+  if (twitter) {
+    // TWEET
   }
 }

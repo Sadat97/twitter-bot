@@ -1035,3 +1035,14 @@ input:checked + .slider:before {
 h1 {
   font-family: "Rock Salt", cursive;
 }
+
+/* Form */
+form {
+  margin-top: 20px;
+}
+
+.flex {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+}
