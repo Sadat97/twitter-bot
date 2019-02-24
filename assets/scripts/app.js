@@ -66,14 +66,17 @@ function UserAction() {
     if (twitter) {
 
     }
-    Promise.all([]).then(function (values) {
-        console.log(values);
-    });
 
+
+    // this is the body of the tweet append on it
     var status = `Joke of the day: ${jk}
 
 top headline of the day: ${news_link}`;
 
+
+
+
+   // call it to make the tweet
         tweetIt(status);
 }
 
