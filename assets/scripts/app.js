@@ -1,8 +1,6 @@
 const apiBtns = document.querySelectorAll(".api-btn");
 
 var jk;
-var rt;
-var ri;
 var rl;
 var news = false;
 var jokes = false;
@@ -71,25 +69,14 @@ function UserAction() {
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         var data = JSON.parse(this.responseText);
-        console.log("Recipe Title", data.recipes[0].title, "\n");
-        console.log(data.recipes[0].image_url, "\n");
         console.log("Recipe Link", data.recipes[0].f2f_url, "\n");
-        rt = data.recipes[0].title;
-        ri = data.recipes[0].image_url;
-        rl = data.recipes[0].f2f_url;
+        rl = data.recipes[Math.floor(Math.random() * 30) + 0
+            ].f2f_url;
       }
     };
-    var input = document.getElementById("textInput");
-    var submitButton = document.getElementById("submitButton");
-    submitButton.addEventListener("click", function() {
-      if (input.value === "") {
-        input.value = "pizza";
-      }
-    });
     xhttp.open(
       "GET",
-      "https://www.food2fork.com/api/search?key=3c539a3bc1bdf607e4f515665d95b504&q=" +
-        input.value,
+      "https://www.food2fork.com/api/search?key=3c539a3bc1bdf607e4f515665d95b504",
       false
     );
     xhttp.send();
@@ -100,18 +87,40 @@ function UserAction() {
 
   // this is the body of the tweet append on it
 
-  if (jokes && news)
-    status = `Joke of the day: ${jk}
+  if (jokes && news && foodRecipes)
+    {
+        status = `Joke of the day: ${jk}
+   
+Recipe of the Day: ${rl}
 
 top headline of the day: ${news_link}`;
+    }
   else if (jokes)
     status = `Joke of the day: ${jk}`;
   else if (news)
     status = `top headline of the day: ${news_link}`;
+  else if (foodRecipes)
+      status = `Recipe of the Day: ${rl}`;
+  else if (jokes && foodRecipes){
+      status = `Joke of the day: ${jk}
+   
+Recipe of the Day: ${rl}`;
 
+  }
+  else if (jokes && news){
+      status = `Joke of the day: ${jk}
+      
+top headline of the day: ${news_link}`;
 
+  }
 
-  // call it to make the tweet
+  else if (news && foodRecipes){
+      status = `Recipe of the Day: ${rl}
+
+top headline of the day: ${news_link}`;
+  }
+
+        // call it to make the tweet
   if (news || jokes)
     tweetIt(status);
 
