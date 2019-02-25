@@ -39,13 +39,18 @@ apiBtns.forEach(btn =>
 
 function UserAction() {
   var news_link = "";
+  var count = 0;
   if (news) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         var url = JSON.parse(this.responseText);
-        console.log(url.articles[0].url);
-        news_link = url.articles[0].url;
+        console.log(url.articles[count].url);
+        news_link = url.articles[count].url;
+        count++;
+        if (count > 10) {
+          count = 0;
+        }
       }
     };
     xhttp.open(
@@ -78,7 +83,7 @@ function UserAction() {
     };
     xhttp.open(
       "GET",
-      "https://www.food2fork.com/api/search?key=3c539a3bc1bdf607e4f515665d95b504",
+      "https://www.food2fork.com/api/search?key=2fd932f0709ea4042f10dcabd03ef84e",
       false
     );
     xhttp.send();
@@ -134,8 +139,8 @@ function tweetIt(status) {
   })
     .then(response => response.json())
     .then(data => {
-      updateTweetsRecords(data.id);
-      console.log(data);
+      updateTweetsRecords(data.id_str);
+      //console.log(data);
     });
 }
 
@@ -172,17 +177,10 @@ function updateTweetsRecords(id) {
 
 /* Display Tweets Functions */
 var ul = document.querySelector("ul");
-console.log(ul);
+
 function displayTweets(numOfTweets, tweetId) {
-  var li, a;
-  for (var i = 0; i < numOfTweets; i++) {
-    createLinkElement(li, a, tweetId);
-    console.log(li);
-  }
-}
-function createLinkElement(li, a, tweetId) {
-  li = document.createElement("li");
-  a = document.createElement("a");
+  var li = document.createElement("li");
+  var a = document.createElement("a");
   ul.appendChild(li);
   li.appendChild(a);
   li.appendChild(document.createTextNode("Tweet with id: "));
