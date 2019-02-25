@@ -1,29 +1,38 @@
 const apiBtns = document.querySelectorAll(".api-btn");
 
+var jk;
+var rt;
+var ri;
+var rl;
 var news = false;
 var jokes = false;
-var url;
-var jk;
+var foodRecipes = false;
 
 apiBtns.forEach(btn =>
   btn.addEventListener("change", e => {
     console.log(e.target.dataset.name); // API name
     if (e.target.checked) {
       // TURN ON API
-      if (e.target.id == 1) {
+      if (e.target.dataset.name === "news") {
         news = true;
       }
-      if (e.target.id == 2) {
+      if (e.target.dataset.name === "joke") {
         jokes = true;
+      }
+      if (e.target.dataset.name === "foodRecipes") {
+        foodRecipes = true;
       }
       console.log("Checked");
     } else {
       // TURN OFF API
-      if (e.target.id == 1) {
+      if (e.target.dataset.name === "news") {
         news = false;
       }
-      if (e.target.id == 2) {
+      if (e.target.dataset.name === "joke") {
         jokes = false;
+      }
+      if (e.target.dataset.name === "foodRecipes") {
+        foodRecipes = false;
       }
       console.log("Not checked");
     }
@@ -36,7 +45,7 @@ function UserAction() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        url = JSON.parse(this.responseText);
+        var url = JSON.parse(this.responseText);
         console.log(url.articles[0].url);
         news_link = url.articles[0].url;
 
@@ -56,6 +65,36 @@ function UserAction() {
     req.open("GET", "https://geek-jokes.sameerkumar.website/api", false);
     req.send();
   }
+  if (foodRecipes) {
+    // foodRecipes
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var data = JSON.parse(this.responseText);
+        console.log("Recipe Title", data.recipes[0].title, "\n");
+        console.log(data.recipes[0].image_url, "\n");
+        console.log("Recipe Link", data.recipes[0].f2f_url, "\n");
+        rt = data.recipes[0].title;
+        ri = data.recipes[0].image_url;
+        rl = data.recipes[0].f2f_url;
+      }
+    };
+    var input = document.getElementById("textInput");
+    var submitButton = document.getElementById("submitButton");
+    submitButton.addEventListener("click", function() {
+      if (input.value === "") {
+        input.value = "pizza";
+      }
+    });
+    xhttp.open(
+      "GET",
+      "https://www.food2fork.com/api/search?key=3c539a3bc1bdf607e4f515665d95b504&q=" +
+        input.value,
+      false
+    );
+    xhttp.send();
+  }
+
   var status;
 
 
