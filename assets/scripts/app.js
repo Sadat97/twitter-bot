@@ -38,7 +38,7 @@ apiBtns.forEach(btn =>
 );
 
 function UserAction() {
-  var news_link = "";
+  var news_link;
   var count = 0;
   if (news) {
     var xhttp = new XMLHttpRequest();
@@ -91,13 +91,22 @@ function UserAction() {
 
   var status;
   var jokesStatment = `Joke of the day: ${jk}`;
-  var newsStatment = `Recipe of the Day: ${rl}`;
-  var foodRecipesStatment = `top headline of the day: ${news_link}`;
+  var newsStatment = `top headline of the day: ${news_link}`;
+  var foodRecipesStatment = `Recipe of the Day: ${rl}`;
   var statusCheck = false;
   // this is the body of the tweet append on it
 
   if (jokes && news && foodRecipes) {
     status = jokesStatment + "\n" + newsStatment + "\n" + foodRecipesStatment;
+    statusCheck = true;
+  } else if (jokes && foodRecipes) {
+    status = jokesStatment + "\n" + foodRecipesStatment;
+    statusCheck = true;
+  } else if (jokes && news) {
+    status = jokesStatment + "\n" + newsStatment;
+    statusCheck = true;
+  } else if (news && foodRecipes) {
+    status = foodRecipesStatment + "\n" + newsStatment;
     statusCheck = true;
   } else if (jokes) {
     status = jokesStatment;
@@ -108,17 +117,7 @@ function UserAction() {
   } else if (foodRecipes) {
     status = foodRecipesStatment;
     statusCheck = true;
-  } else if (jokes && foodRecipes) {
-    status = jokesStatment + "\n" + foodRecipesStatment;
-    statusCheck = true;
-  } else if (jokes && news) {
-    status = jokesStatment + "\n" + newsStatment;
-    statusCheck = true;
-  } else if (news && foodRecipes) {
-    status = newsStatment + "\n" + newsStatment;
-    statusCheck = true;
-  }
-
+  } 
   // call it to make the tweet
   if (statusCheck) tweetIt(status);
 }
@@ -129,10 +128,13 @@ function tweetIt(status) {
       status: status
     }
   };
+  console.log(param);
+  var jsn = JSON.stringify(param);
   var url = "https://thawing-oasis-15291.herokuapp.com/tweets";
+  console.log(JSON.stringify(param));
   fetch(url, {
     method: "POST",
-    body: JSON.stringify(param),
+    body: jsn,
     headers: {
       "Content-Type": "application/json"
     }
@@ -160,6 +162,7 @@ function getallTweets() {
 
 function updateTweetsRecords(id) {
   var param = { id: id };
+  //console.log(JSON.stringify(param));
   var url = "https://thawing-oasis-15291.herokuapp.com/store_tweet";
   fetch(url, {
     method: "PUT",
