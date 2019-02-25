@@ -147,3 +147,35 @@ function tweetIt(status) {
       console.log(data);
     });
 }
+
+function getallTweets() {
+  var url = "https://thawing-oasis-15291.herokuapp.com/get_tweets";
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    });
+}
+
+function updateTweetsRecords(id) {
+    var param = {id: id};
+    var url = "https://thawing-oasis-15291.herokuapp.com/store_tweet";
+    fetch(url, {
+        method: "PUT",
+        body: JSON.stringify(param),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then((response) => response.json())
+        .then((data) => {
+
+        });
+
+
+}
