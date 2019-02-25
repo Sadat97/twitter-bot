@@ -1035,3 +1035,11 @@ input:checked + .slider:before {
 h1 {
   font-family: "Rock Salt", cursive;
 }
+
+/* ul Style */
+.ulStyle {
+  list-style-type: none;
+}
+ul li a {
+  cursor: pointer;
+}
