@@ -41,20 +41,23 @@ function UserAction() {
   var news_link = "";
   if (news) {
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
+    xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         var url = JSON.parse(this.responseText);
         console.log(url.articles[0].url);
         news_link = url.articles[0].url;
-
       }
     };
-    xhttp.open("GET", "https://newsapi.org/v2/top-headlines?country=eg&apiKey=5546e675c6334e0b9b1bf229e18a2d13", false);
+    xhttp.open(
+      "GET",
+      "https://newsapi.org/v2/top-headlines?country=eg&apiKey=5546e675c6334e0b9b1bf229e18a2d13",
+      false
+    );
     xhttp.send();
   }
   if (jokes) {
     var req = new XMLHttpRequest();
-    req.onreadystatechange = function () {
+    req.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         jk = JSON.parse(this.responseText);
         console.log(jk);
@@ -69,9 +72,8 @@ function UserAction() {
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         var data = JSON.parse(this.responseText);
-        console.log("Recipe Link", data.recipes[0].f2f_url, "\n");
-        rl = data.recipes[Math.floor(Math.random() * 30) + 0
-            ].f2f_url;
+        rl = data.recipes[Math.floor(Math.random() * 30) + 0].f2f_url;
+        console.log("Recipe Link", rl, "\n");
       }
     };
     xhttp.open(
@@ -83,54 +85,42 @@ function UserAction() {
   }
 
   var status;
-
-
+  var jokesStatment = `Joke of the day: ${jk}`;
+  var newsStatment = `Recipe of the Day: ${rl}`;
+  var foodRecipesStatment = `top headline of the day: ${news_link}`;
+  var statusCheck = false;
   // this is the body of the tweet append on it
 
-  if (jokes && news && foodRecipes)
-    {
-        status = `Joke of the day: ${jk}
-   
-Recipe of the Day: ${rl}
-
-top headline of the day: ${news_link}`;
-    }
-  else if (jokes)
-    status = `Joke of the day: ${jk}`;
-  else if (news)
-    status = `top headline of the day: ${news_link}`;
-  else if (foodRecipes)
-      status = `Recipe of the Day: ${rl}`;
-  else if (jokes && foodRecipes){
-      status = `Joke of the day: ${jk}
-   
-Recipe of the Day: ${rl}`;
-
-  }
-  else if (jokes && news){
-      status = `Joke of the day: ${jk}
-      
-top headline of the day: ${news_link}`;
-
+  if (jokes && news && foodRecipes) {
+    status = jokesStatment + "\n" + newsStatment + "\n" + foodRecipesStatment;
+    statusCheck = true;
+  } else if (jokes) {
+    status = jokesStatment;
+    statusCheck = true;
+  } else if (news) {
+    status = newsStatment;
+    statusCheck = true;
+  } else if (foodRecipes) {
+    status = foodRecipesStatment;
+    statusCheck = true;
+  } else if (jokes && foodRecipes) {
+    status = jokesStatment + "\n" + foodRecipesStatment;
+    statusCheck = true;
+  } else if (jokes && news) {
+    status = jokesStatment + "\n" + newsStatment;
+    statusCheck = true;
+  } else if (news && foodRecipes) {
+    status = newsStatment + "\n" + newsStatment;
+    statusCheck = true;
   }
 
-  else if (news && foodRecipes){
-      status = `Recipe of the Day: ${rl}
-
-top headline of the day: ${news_link}`;
-  }
-
-        // call it to make the tweet
-  if (news || jokes)
-    tweetIt(status);
-
-
+  // call it to make the tweet
+  if (statusCheck) tweetIt(status);
 }
 
 function tweetIt(status) {
   var param = {
-    tweet:
-    {
+    tweet: {
       status: status
     }
   };
@@ -142,8 +132,9 @@ function tweetIt(status) {
       "Content-Type": "application/json"
     }
   })
-    .then((response) => response.arrayBuffer())
-    .then((data) => {
+    .then(response => response.json())
+    .then(data => {
+      updateTweetsRecords(data.id);
       console.log(data);
     });
 }
@@ -156,26 +147,48 @@ function getallTweets() {
       "Content-Type": "application/json"
     }
   })
-    .then((response) => response.json())
-    .then((data) => {
+    .then(response => response.json())
+    .then(data => {
       console.log(data);
     });
 }
 
 function updateTweetsRecords(id) {
-    var param = {id: id};
-    var url = "https://thawing-oasis-15291.herokuapp.com/store_tweet";
-    fetch(url, {
-        method: "PUT",
-        body: JSON.stringify(param),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-        .then((response) => response.json())
-        .then((data) => {
+  var param = { id: id };
+  var url = "https://thawing-oasis-15291.herokuapp.com/store_tweet";
+  fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(param),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      displayTweets(data.length, id);
+    });
+}
 
-        });
-
-
+/* Display Tweets Functions */
+var ul = document.querySelector("ul");
+console.log(ul);
+function displayTweets(numOfTweets, tweetId) {
+  var li, a;
+  for (var i = 0; i < numOfTweets; i++) {
+    createLinkElement(li, a, tweetId);
+    console.log(li);
+  }
+}
+function createLinkElement(li, a, tweetId) {
+  li = document.createElement("li");
+  a = document.createElement("a");
+  ul.appendChild(li);
+  li.appendChild(a);
+  li.appendChild(document.createTextNode("Tweet with id: "));
+  a.appendChild(
+    document.createTextNode("https://twitter.com/mac_sadat/status/" + tweetId)
+  );
+  a.href = "https://twitter.com/mac_sadat/status/" + tweetId;
+  a.setAttribute("target", "_blank");
 }
