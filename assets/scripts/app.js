@@ -156,6 +156,9 @@ function getallTweets() {
   })
     .then(response => response.json())
     .then(data => {
+      data.map(function (tweet) {
+        displayTweets(data.length, tweet.id);
+      })
       console.log(data);
     });
 }
@@ -186,10 +189,12 @@ function displayTweets(numOfTweets, tweetId) {
   var a = document.createElement("a");
   ul.appendChild(li);
   li.appendChild(a);
-  li.appendChild(document.createTextNode("Tweet with id: "));
+  // li.appendChild(document.createTextNode("Tweet with id: "));
   a.appendChild(
     document.createTextNode("https://twitter.com/mac_sadat/status/" + tweetId)
   );
   a.href = "https://twitter.com/mac_sadat/status/" + tweetId;
   a.setAttribute("target", "_blank");
 }
+
+getallTweets();
