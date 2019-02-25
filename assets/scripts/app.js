@@ -140,7 +140,7 @@ function tweetIt(status) {
     .then(response => response.json())
     .then(data => {
       updateTweetsRecords(data.id_str);
-      console.log(data);
+      //console.log(data);
     });
 }
 
