@@ -38,7 +38,7 @@ apiBtns.forEach(btn =>
 );
 
 function UserAction() {
-  var news_link = "";
+  var news_link;
   var count = 0;
   if (news) {
     var xhttp = new XMLHttpRequest();
@@ -91,13 +91,22 @@ function UserAction() {
 
   var status;
   var jokesStatment = `Joke of the day: ${jk}`;
-  var newsStatment = `Recipe of the Day: ${rl}`;
-  var foodRecipesStatment = `top headline of the day: ${news_link}`;
+  var newsStatment = `top headline of the day: ${news_link}`;
+  var foodRecipesStatment = `Recipe of the Day: ${rl}`;
   var statusCheck = false;
   // this is the body of the tweet append on it
 
   if (jokes && news && foodRecipes) {
     status = jokesStatment + "\n" + newsStatment + "\n" + foodRecipesStatment;
+    statusCheck = true;
+  } else if (jokes && foodRecipes) {
+    status = jokesStatment + "\n" + foodRecipesStatment;
+    statusCheck = true;
+  } else if (jokes && news) {
+    status = jokesStatment + "\n" + newsStatment;
+    statusCheck = true;
+  } else if (news && foodRecipes) {
+    status = foodRecipesStatment + "\n" + newsStatment;
     statusCheck = true;
   } else if (jokes) {
     status = jokesStatment;
@@ -108,17 +117,7 @@ function UserAction() {
   } else if (foodRecipes) {
     status = foodRecipesStatment;
     statusCheck = true;
-  } else if (jokes && foodRecipes) {
-    status = jokesStatment + "\n" + foodRecipesStatment;
-    statusCheck = true;
-  } else if (jokes && news) {
-    status = jokesStatment + "\n" + newsStatment;
-    statusCheck = true;
-  } else if (news && foodRecipes) {
-    status = newsStatment + "\n" + newsStatment;
-    statusCheck = true;
   }
-
   // call it to make the tweet
   if (statusCheck) tweetIt(status);
 }
@@ -129,10 +128,13 @@ function tweetIt(status) {
       status: status
     }
   };
+  console.log(param);
+  var jsn = JSON.stringify(param);
   var url = "https://thawing-oasis-15291.herokuapp.com/tweets";
+  console.log(JSON.stringify(param));
   fetch(url, {
     method: "POST",
-    body: JSON.stringify(param),
+    body: jsn,
     headers: {
       "Content-Type": "application/json"
     }
@@ -154,12 +156,16 @@ function getallTweets() {
   })
     .then(response => response.json())
     .then(data => {
+      data.map(function(tweet) {
+        displayTweets(tweet.status_id);
+      });
       console.log(data);
     });
 }
 
 function updateTweetsRecords(id) {
-  var param = { id: id };
+  var param = { status_id: id };
+  //console.log(JSON.stringify(param));
   var url = "https://thawing-oasis-15291.herokuapp.com/store_tweet";
   fetch(url, {
     method: "PUT",
@@ -171,22 +177,27 @@ function updateTweetsRecords(id) {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      displayTweets(data.length, id);
+      displayTweets(id);
     });
 }
 
 /* Display Tweets Functions */
 var ul = document.querySelector("ul");
 
-function displayTweets(numOfTweets, tweetId) {
+let counter = 1;
+
+function displayTweets(tweetId) {
   var li = document.createElement("li");
   var a = document.createElement("a");
+
   ul.appendChild(li);
+  li.appendChild(document.createTextNode("Tweet number " + counter + ": "));
+  counter++;
   li.appendChild(a);
-  li.appendChild(document.createTextNode("Tweet with id: "));
   a.appendChild(
     document.createTextNode("https://twitter.com/mac_sadat/status/" + tweetId)
   );
   a.href = "https://twitter.com/mac_sadat/status/" + tweetId;
   a.setAttribute("target", "_blank");
+  console.log("tweetId: ", tweetId);
 }

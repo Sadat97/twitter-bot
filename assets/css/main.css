@@ -1038,8 +1038,28 @@ h1 {
 
 /* ul Style */
 .ulStyle {
+  width: 500px;
+  margin: 10px;
+}
+ul {
   list-style-type: none;
+}
+
+ul li {
+  position: relative;
+  font: bold italic 16px/1.5 Helvetica, Verdana, sans-serif;
+  margin-bottom: 20px;
+}
+
+li p {
+  font: 12px/1.5 Helvetica, sans-serif;
+  padding-left: 60px;
+  color: #555;
 }
 ul li a {
   cursor: pointer;
+}
+
+span {
+  position: absolute;
 }
