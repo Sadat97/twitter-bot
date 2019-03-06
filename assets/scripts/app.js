@@ -157,14 +157,14 @@ function getallTweets() {
     .then(response => response.json())
     .then(data => {
       data.map(function (tweet) {
-        displayTweets(data.length, tweet.id);
+        displayTweets(tweet.status_id);
       })
       console.log(data);
     });
 }
 
 function updateTweetsRecords(id) {
-  var param = { id: id };
+  var param = { status_id: id };
   //console.log(JSON.stringify(param));
   var url = "https://thawing-oasis-15291.herokuapp.com/store_tweet";
   fetch(url, {
@@ -177,14 +177,14 @@ function updateTweetsRecords(id) {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      displayTweets(data.length, id);
+      displayTweets(id);
     });
 }
 
 /* Display Tweets Functions */
 var ul = document.querySelector("ul");
 
-function displayTweets(numOfTweets, tweetId) {
+function displayTweets(tweetId) {
   var li = document.createElement("li");
   var a = document.createElement("a");
   ul.appendChild(li);
@@ -198,3 +198,6 @@ function displayTweets(numOfTweets, tweetId) {
 }
 
 getallTweets();
+
+
+
